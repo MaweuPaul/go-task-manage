@@ -1,0 +1,13 @@
+# Binary output
+taskmanager.exe
+taskmanager
+
+# Environment variables
+.env
+
+# Air tmp folder (hot reload)
+tmp/
+
+# IDE files
+.vscode/
+.idea/
