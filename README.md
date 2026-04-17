@@ -14,7 +14,7 @@ A simple REST API built with Go and Gin framework — my first Go project.
 
 ### Installation
 ```bash
-git clone <your-repo-url>
+git clone git@github.com:MaweuPaul/go-task-manage.git
 cd taskmanager
 go mod tidy
 go run main.go
@@ -40,5 +40,4 @@ go run main.go
 }
 ```
 
-## Author
-Built while learning Go 🐹
+
