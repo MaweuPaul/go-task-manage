@@ -1,21 +1,19 @@
 package main
 
 import (
+	"taskmanager/middlewares"
 	"taskmanager/routes"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
-func pingHandler(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "pong",
-	})
-}
-
 func main() {
 	godotenv.Load()
-	router := gin.Default()
-	routes.SetUpRoutes(router)
-	router.Run(":8000")
+	r := gin.Default()
+	// global middlewates
+	r.Use(middlewares.CORSMiddleware)
+
+	routes.SetUpRoutes(r)
+	r.Run(":8000")
 }
