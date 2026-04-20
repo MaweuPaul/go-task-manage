@@ -31,7 +31,7 @@ func GenerateJWT(userId string) (string, error) {
 	}
 	// create a token with the claims and sign it with a secret key
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	secret := os.Getenv("jwt_secret")
+	secret := os.Getenv("JWT_SECRET")
 	return token.SignedString([]byte(secret))
 
 }
@@ -55,7 +55,7 @@ func RefreshJwt(userId string) (string, error) {
 		"type":   "refresh",
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	secret := os.Getenv("jwt_secret")
+	secret := os.Getenv("JWT_SECRET")
 	return token.SignedString([]byte(secret))
 
 }
@@ -69,20 +69,17 @@ func RefreshJwt(userId string) (string, error) {
 //   - error: if token is invalid, expired or parsing fails
 
 func ValidateToken(tokenString string) (jwt.MapClaims, error) {
-
 	if tokenString == "" {
 
 		return jwt.MapClaims{}, fmt.Errorf("Token is required")
 	}
-
-	secret := os.Getenv("jwt_secret")
+	secret := os.Getenv("JWT_SECRET")
 	token, err := jwt.ParseWithClaims(tokenString, jwt.MapClaims{}, func(token *jwt.Token) (any, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 		return []byte(secret), nil
 	})
-
 	if err != nil {
 		return jwt.MapClaims{}, err
 	}
@@ -93,6 +90,5 @@ func ValidateToken(tokenString string) (jwt.MapClaims, error) {
 	if !ok {
 		return jwt.MapClaims{}, fmt.Errorf("invalid token claims")
 	}
-
 	return claims, nil
 }
