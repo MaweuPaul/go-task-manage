@@ -8,3 +8,9 @@ type User struct {
 	Email     string `json:"email"`
 	Password  string `json:"-"`
 }
+
+type AuthResponse struct {
+	User         User   `json:"user"`
+	AccessToken  string `json:"accessToken"`
+	RefreshToken string `json:"refreshToken"`
+}
