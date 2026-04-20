@@ -2,14 +2,20 @@ package routes
 
 import (
 	"taskmanager/controllers"
+	"taskmanager/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
 
 func TaskRoutes(r *gin.Engine) {
-	r.POST("/tasks", controllers.CreateTaskHandler)
-	r.GET("/tasks", controllers.GetAllTasksHandler)
-	r.GET("/tasks/:id", controllers.GetTaskHandler)
-	r.PUT("/tasks/:id", controllers.UpdateTaskHandler)
-	r.DELETE("/tasks/:id", controllers.DeleteTaskHandler)
+	protected := r.Group("/tasks")
+	protected.Use(
+		middlewares.AuthMiddleware,
+	)
+
+	protected.POST("", controllers.CreateTaskHandler)
+	protected.GET("", controllers.GetAllTasksHandler)
+	protected.GET("/:id", controllers.GetTaskHandler)
+	protected.PUT("/:id", controllers.UpdateTaskHandler)
+	protected.DELETE("/:id", controllers.DeleteTaskHandler)
 }
