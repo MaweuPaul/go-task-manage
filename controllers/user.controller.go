@@ -11,7 +11,7 @@ import (
 
 // CreateUserHandler handles the creation of a new user.
 
-func CreateUserHandler(c *gin.Context, email string, password string, nameFirst string, nameLast string, role string) {
+func CreateUserHandler(c *gin.Context) {
 
 	// Bind the JSON payload to a User struct
 	var user models.User
@@ -19,17 +19,11 @@ func CreateUserHandler(c *gin.Context, email string, password string, nameFirst 
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	// Check if email and password are provided
-	if email == "" || password == "" {
-		c.JSON(400, gin.H{"error": "Email and password are required"})
+	// Create the user using the service layer
+	createdUser, err := services.CreateUser(user)
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
-
-	//  function to check if email is already in use
-
-	// chekc if the email is already in use
-	if services.IsEmailInUse(email) {
-		c.JSON(400, gin.H{"error": "Email is already in use"})
-		return
-	}
+	c.JSON(201, createdUser)
 }
