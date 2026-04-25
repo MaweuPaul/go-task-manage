@@ -58,6 +58,6 @@ func GetAllTasksHandler(c *gin.Context) {
 
 		c.JSON(500, gin.H{"error": err.Error()})
 	} else {
-		c.JSON(200, gin.H{"tasks": tasks})
+		c.JSON(200, gin.H{"task": tasks})
 	}
 }

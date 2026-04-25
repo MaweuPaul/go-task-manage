@@ -9,6 +9,7 @@ import (
 
 func TaskRoutes(r *gin.Engine) {
 	protected := r.Group("/tasks")
+	protected.Use(middlewares.RateLimitMiddleware("200-H"))
 	protected.Use(
 		middlewares.AuthMiddleware,
 	)
