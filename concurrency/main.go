@@ -2,27 +2,21 @@ package main
 
 import (
 	"fmt"
-	"sync"
 )
 
 func main() {
-	var wg sync.WaitGroup
-	var mu sync.Mutex
+	ch := make(chan string)
 	var results []string
 
 	for i := 1; i <= 5; i++ {
-		wg.Add(1)
 		go func(id int) {
-			defer wg.Done()
-
-			result := fmt.Sprintf("point %d calculated", id)
-
-			mu.Lock() // lock before writing
-			results = append(results, result)
-			mu.Unlock() // unlock after writing
+			result := fmt.Sprintf("Result from goroutine %d", id)
+			ch <- result
 		}(i)
 	}
 
-	wg.Wait()
+	for i := 0; i < 5; i++ {
+		results = append(results, <-ch)
+	}
 	fmt.Println("Results:", results)
 }
